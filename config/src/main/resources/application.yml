@@ -1,0 +1,20 @@
+server:
+  port: 8011
+
+spring:
+  application:
+    name: config-server
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/shoven1/springcloud
+          default-label: master
+          username: shoven1
+          password: xw8420080
+      fail-fast: true
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8001/eureka/
