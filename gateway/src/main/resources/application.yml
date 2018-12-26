@@ -1,0 +1,18 @@
+server:
+  port: 8021
+
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: guest
+    password: guest
+
+zuul:
+  routes:
+    client:
+      path: /api/**
+      serviceId: client
+
+
+

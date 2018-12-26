@@ -1,12 +1,13 @@
 spring:
   application:
-    name: client
+    name: gateway
   cloud:
     config:
       enabled: true
       discovery:
         enabled: true
         service-id: config-server
+      name: client
       fail-fast: true
       label: master
       profile: dev
