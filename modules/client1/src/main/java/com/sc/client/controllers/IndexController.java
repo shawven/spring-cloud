@@ -5,6 +5,9 @@ import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+
 /**
  * @author FS
  * @since 2018-12-13
@@ -21,7 +24,14 @@ public class IndexController {
 
     @RequestMapping("/")
     public String index() {
-        return "hello world from port " + port;
+        InetAddress addr;
+        try {
+            addr = InetAddress.getLocalHost();
+        } catch (UnknownHostException e) {
+            return e.getMessage();
+        }
+
+        return "hello world from "  + addr.getHostName();
     }
 
     @RequestMapping("hello")
