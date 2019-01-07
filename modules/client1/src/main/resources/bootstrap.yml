@@ -7,11 +7,12 @@ spring:
       discovery:
         enabled: true
         service-id: config-server
-      fail-fast: true
       label: master
       profile: dev
 
 eureka:
   client:
     service-url:
-      defaultZone: http://${eureka.address}:8001/eureka/
+      defaultZone: http://eurekaServer:8001/eureka/
+  instance:
+    prefer-ip-address: true

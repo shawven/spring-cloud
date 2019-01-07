@@ -1,0 +1,17 @@
+version: '3'
+#  properties:
+#    - &rabbitmqAddress "--rabbitmq.address=192.168.0.147"
+#    - &mysqlAddress "--rabbitmq.address=192.168.0.147"
+services:
+  gateway:
+    image: gateway:latest
+    expose:
+      - 8021
+    ports:
+      - 80:8021
+    command: &address ["--rabbitmq.address=192.168.0.147"]
+  client1:
+    image: client1:latest
+    command: *address
+    expose:
+      - 8081
