@@ -1,0 +1,27 @@
+version: "3"
+
+services:
+  config:
+    image: config:latest
+    command:
+      - "--eureka.address=192.168.2.101"
+      - "--rabbitmq.address=192.168.2.101"
+    ports:
+      - 8011:8011
+  gateway:
+    image: gateway:latest
+    command:
+      - "--eureka.address=192.168.2.101"
+      - "--rabbitmq.address=192.168.2.101"
+    ports:
+      - 80:8021
+    depends_on:
+      - config
+  client1:
+    image: client1:latest
+
+    command:
+      - "--eureka.address=192.168.2.101"
+      - "--rabbitmq.address=192.168.2.101"
+    depends_on:
+      - config

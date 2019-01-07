@@ -9,6 +9,7 @@ spring:
         service-id: config-server
       label: master
       profile: dev
+      fail-fast: false
 
 eureka:
   client:
