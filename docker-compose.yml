@@ -1,27 +1,33 @@
-version: "3"
+version: '3'
 
 services:
-  config:
+  eurekaServer:
+    image: eureka:latest
+    command: &address ["--rabbitmq.host=192.168.0.147"]
+    expose:
+      - 8001
+    ports:
+      - 8001:8001
+  configServer:
     image: config:latest
-    command:
-      - "--eureka.address=192.168.2.101"
-      - "--rabbitmq.address=192.168.2.101"
+    expose:
+      - 8011
     ports:
       - 8011:8011
+    command: *address
+    links:
+      - eurekaServer
   gateway:
     image: gateway:latest
-    command:
-      - "--eureka.address=192.168.2.101"
-      - "--rabbitmq.address=192.168.2.101"
+    expose:
+      - 8021
     ports:
       - 80:8021
-    depends_on:
-      - config
+    command: &address2 ["--rabbitmq.host=192.168.0.147", "--eurekaServer.host=192.168.0.147"]
+    links:
+      - client1
   client1:
     image: client1:latest
-
-    command:
-      - "--eureka.address=192.168.2.101"
-      - "--rabbitmq.address=192.168.2.101"
-    depends_on:
-      - config
+    command: *address2
+    expose:
+      - 8081

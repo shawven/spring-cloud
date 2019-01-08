@@ -10,7 +10,7 @@ spring:
         git:
           uri: https://github.com/shoven1/springcloud
   rabbitmq:
-    host: ${rabbitmq.address}
+    host: ${rabbitmq.host}
     port: 5672
     username: guest
     password: guest
@@ -21,7 +21,7 @@ eureka:
       defaultZone: http://eurekaServer:8001/eureka/
   instance:
     prefer-ip-address: true
-
+    ip-address: 192.168.0.147
 management:
   endpoints:
     web:

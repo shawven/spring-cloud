@@ -3,7 +3,7 @@ server:
 
 spring:
   rabbitmq:
-    host: ${rabbitmq.address}
+    host: ${rabbitmq.host}
     port: 5672
     username: guest
     password: guest
@@ -13,7 +13,8 @@ eureka:
     # 关闭保护机制 生产环境建议开启
     enable-self-preservation: false
   instance:
-    hostname: localhost
+    prefer-ip-address: true
+    ip-address: 192.168.0.147
   client:
     #由于该应用为注册中心,设置为false,表明不向注册中心注册自己
     register-with-eureka: false

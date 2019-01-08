@@ -1,11 +1,9 @@
 version: '3'
-#  properties:
-#    - &rabbitmqAddress "--rabbitmq.address=192.168.0.147"
-#    - &mysqlAddress "--rabbitmq.address=192.168.0.147"
+
 services:
   eurekaServer:
     image: eureka:latest
-    command: &address ["--rabbitmq.address=192.168.0.147"]
+    command: &address ["--rabbitmq.host=192.168.0.147"]
     expose:
       - 8001
     ports:
@@ -18,6 +16,4 @@ services:
       - 8011:8011
     command: *address
     links:
-      - eurekaServer
-    depends_on:
       - eurekaServer
