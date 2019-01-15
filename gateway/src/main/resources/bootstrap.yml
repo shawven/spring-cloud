@@ -1,6 +1,8 @@
 spring:
   application:
     name: gateway
+  profiles:
+    active: dev
   cloud:
     config:
       enabled: true
@@ -9,10 +11,35 @@ spring:
         service-id: config-server
       label: master
       profile: dev
+      fail-fast: false
+
+---
+
+spring:
+  profiles: dev
 
 eureka:
+  instance:
+    hostname: ${spring.application.name}
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
   client:
     service-url:
-      defaultZone: http://${eurekaServer.host}:8001/eureka/
+      defaultZone: http://localhost:8001/eureka/
+
+---
+
+spring:
+  profiles: prod
+  cloud:
+    config:
+      profile: prod
+
+eureka:
   instance:
-    prefer-ip-address: true
+    hostname: ${spring.profiles}
+  client:
+    service-url:
+      defaultZone: http://eureka-server1:8001/eureka/
+
+---

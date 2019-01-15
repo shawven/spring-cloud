@@ -1,19 +1,64 @@
 version: '3'
 
 services:
-  eurekaServer:
+  eureka-server1:
     image: eureka:latest
-    command: &address ["--rabbitmq.host=192.168.0.147"]
-    expose:
-      - 8001
     ports:
       - 8001:8001
-  configServer:
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=eureka-server1
+      - &rabbitmqHost rabbitmq.host=192.168.0.147
+
+  eureka-server2:
+    image: eureka:latest
+    ports:
+      - 8002:8001
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=eureka-server2
+      - *rabbitmqHost
+
+  eureka-server3:
+    image: eureka:latest
+    ports:
+      - 8003:8001
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=eureka-server3
+      - *rabbitmqHost
+
+  config-server1:
     image: config:latest
-    expose:
-      - 8011
     ports:
       - 8011:8011
-    command: *address
-    links:
-      - eurekaServer
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=config-server1
+      - *rabbitmqHost
+
+  config-server2:
+    image: config:latest
+    ports:
+      - 8012:8011
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=config-server2
+      - *rabbitmqHost
+
+  config-server3:
+    image: config:latest
+    ports:
+      - 8013:8011
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=config-server3
+      - *rabbitmqHost
+networks:
+  cloud-net:

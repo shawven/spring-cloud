@@ -2,23 +2,71 @@ server:
   port: 8001
 
 spring:
+  application:
+    name: eureka-server
+  profiles:
+    active: dev
   rabbitmq:
     host: ${rabbitmq.host}
     port: 5672
     username: guest
     password: guest
 
+---
+
+spring:
+  profiles: dev
+
 eureka:
+  instance:
+    hostname: ${spring.application.name}
+    prefer-ip-address: true
+    instance-id: ${spring.application.name}:${server.port}
   server:
     # 关闭保护机制 生产环境建议开启
     enable-self-preservation: false
-  instance:
-    prefer-ip-address: true
-    ip-address: 192.168.0.147
   client:
     #由于该应用为注册中心,设置为false,表明不向注册中心注册自己
     register-with-eureka: false
     #是否从eureka服务器获取注册信息，这里不需要
     fetch-registry: false
     service-url:
-      defaultZon e: http://${eureka.instance.hostname}:${server.port}/eureka/
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
+
+---
+
+spring:
+  profiles: eureka-server1
+
+eureka:
+  instance:
+    hostname: ${spring.profiles}
+  client:
+    service-url:
+      defaultZone: http://eureka-server2:${server.port}/eureka/,http://eureka-server3:${server.port}/eureka/
+
+---
+
+spring:
+  profiles: eureka-server2
+
+eureka:
+  instance:
+    hostname: ${spring.profiles}
+  client:
+    service-url:
+      defaultZone: http://eureka-server1:${server.port}/eureka/,http://eureka-server3:${server.port}/eureka/
+
+---
+
+spring:
+  profiles: eureka-server3
+
+eureka:
+  instance:
+    hostname: ${spring.profiles}
+  client:
+    service-url:
+      defaultZone: http://eureka-server1:${server.port}/eureka/,http://eureka-server2:${server.port}/eureka/
+
+---

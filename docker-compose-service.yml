@@ -3,15 +3,18 @@ version: '3'
 services:
   gateway:
     image: gateway:latest
-    expose:
-      - 8021
     ports:
       - 80:8021
-    command: &address ["--rabbitmq.host=192.168.0.147", "--eurekaServer.host=192.168.0.147"]
-    links:
-      - client1
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=prod
+      - &rabbitmqHost rabbitmq.ip=192.168.0.147
+      - eurekaServer.host=192.168.0.147:8001
   client1:
     image: client1:latest
-    command: *address
-    expose:
-      - 8081
+    networks:
+      - cloud-net
+    environment:
+      - spring.profiles.active=prod
+      - *rabbitmqHost
